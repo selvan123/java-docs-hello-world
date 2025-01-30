@@ -16,6 +16,7 @@ jobs:
           $res = Invoke-RestMethod -Uri "https://api.github.com/repos/selvan123/HelloWorld/hooks/527200661" -Headers @{ Authorization = "token ${{ secrets.GHToken }}" } -Method Get
 
           #echo "{somevar}={$res.config.secret}" >> $env:$GITHUB_ENV
+          chcp 65001 #set code page to utf-8
           echo ("somevar=" + $env:GITHUB_REF.replace('refs/heads/', '')) >> $env:GITHUB_ENV
 
           $value1 = $res.config.url 
