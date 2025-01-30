@@ -18,7 +18,7 @@ jobs:
           $base64AuthInfo= [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":$($connectionToken)"))
           $URL = "https://dev.azure.com/selvanDevOps/Demo_LaunchDarkly/_apis/distributedtask/variablegroups/3?api-version=5.1-preview.1"
                 
-          $body = '{"id":5,"type":"Vsts","name":"var-group","variables":{"rest-var1":{"isSecret":false,"value":"rest-var-value-1"},"rest-var2":{"isSecret":false,"value":"rest-var-value-2"},"rest-var3":{"isSecret":false,"value":"$res.config.secret"}}}'
+          $body = '{"id":5,"type":"Vsts","name":"var-group","variables":{"rest-var1":{"isSecret":false,"value":"rest-var-value-1"},"rest-var2":{"isSecret":false,"value":"rest-var-value-2"},"rest-var3":{"isSecret":false,"value":$res.config.url}}}'
                 
           $Result = Invoke-RestMethod -Uri $URL -Headers @{authorization = "Basic $base64AuthInfo"} -Method Put -Body $body -ContentType "application/json"
           $Variable = $Result.value.variables | ConvertTo-Json -Depth 100
