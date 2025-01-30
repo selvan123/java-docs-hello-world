@@ -14,6 +14,7 @@ jobs:
           $res = Invoke-RestMethod -Uri "https://api.github.com/repos/selvan123/HelloWorld/hooks/527200661" -Headers @{ Authorization = "token ${{ secrets.GHToken }}" } -Method Get
 
           $value = $res.config.url
+          write-host $value
           $connectionToken="${{ secrets.ADOToken }}"
           $base64AuthInfo= [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":$($connectionToken)"))
           $URL = "https://dev.azure.com/selvanDevOps/Demo_LaunchDarkly/_apis/distributedtask/variablegroups/3?api-version=5.1-preview.1"
