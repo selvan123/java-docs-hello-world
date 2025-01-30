@@ -1,0 +1,27 @@
+name: Read Secrets Example
+
+# Add the workflow_dispatch event for manual triggering
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Run PowerShell Inline Script
+        run: |
+
+          $res = Invoke-RestMethod -Uri "https://api.github.com/repos/selvan123/HelloWorld/hooks/527200661" -Headers @{ Authorization = "token ${{ secrets.GHToken }}" } -Method Get
+
+          $res.config.secret
+          $connectionToken="${{ secrets.ADOToken }}"
+          $base64AuthInfo= [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":$($connectionToken)"))
+          $URL = "https://dev.azure.com/selvanDevOps/Demo_LaunchDarkly/_apis/distributedtask/variablegroups/3?api-version=5.1-preview.1"
+                
+          $body = '{"id":5,"type":"Vsts","name":"var-group","variables":{"rest-var1":{"isSecret":false,"value":"rest-var-value-1"},"rest-var2":{"isSecret":false,"value":"rest-var-value-2"},"rest-var3":{"isSecret":true,"value":$res.config.secret}}}'
+                
+          $Result = Invoke-RestMethod -Uri $URL -Headers @{authorization = "Basic $base64AuthInfo"} -Method Put -Body $body -ContentType "application/json"
+          $Variable = $Result.value.variables | ConvertTo-Json -Depth 100
+          Write-Host $Variable
+        
+        shell: powershell
