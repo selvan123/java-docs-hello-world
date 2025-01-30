@@ -29,7 +29,7 @@ jobs:
           #write-host $value1
           write-host "env. variable value"
           echo $Env:MY_VARIABLE 
-          echo ${{ env.MY_VARIABLE }}
+          echo ${{ Env:MY_VARIABLE }}
           
           $connectionToken="${{ secrets.ADOToken }}"
           $base64AuthInfo= [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":$($connectionToken)"))
