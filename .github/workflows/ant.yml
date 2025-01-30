@@ -9,7 +9,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      MY_VARIABLE : 'lastvar'
+      MY_VARIABLE : "lastvar"
 
     steps:
       - name: Run PowerShell Inline Script
@@ -23,7 +23,7 @@ jobs:
           echo $Env:MY_VARIABLE 
           
 
-          echo "MY_VARIABLE='123'" >> $env.GITHUB_ENV
+          echo "MY_VARIABLE=abc'" >> $env.GITHUB_ENV
           
           #$value1 = $res.config.url 
           #write-host $value1
