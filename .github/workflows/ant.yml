@@ -6,7 +6,7 @@ on:
   
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: linux-latest
 
     env:
       MY_VARIABLE : "lastvar"
@@ -15,30 +15,8 @@ jobs:
       - name: Run PowerShell Inline Script
         run: |
 
-          $res = Invoke-RestMethod -Uri "https://api.github.com/repos/selvan123/HelloWorld/hooks/527200661" -Headers @{ Authorization = "token ${{ secrets.GHToken }}" } -Method Get
-
-          #echo "{somevar}={$res.config.secret}" >> $env:$GITHUB_ENV
-    
-          write-host "env. variable initial value"
-          echo $Env:MY_VARIABLE 
-          
-
-     
-          $Env:MY_VARIABLE = $res.config.secret
-          #$value1 = $res.config.url 
-          #write-host $value1
-          write-host "env. variable value"
-          echo $Env:MY_VARIABLE 
-          echo {{ $(Env:MY_VARIABLE) }}
-          
-          $connectionToken="${{ secrets.ADOToken }}"
-          $base64AuthInfo= [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes(":$($connectionToken)"))
-          $URL = "https://dev.azure.com/selvanDevOps/Demo_LaunchDarkly/_apis/distributedtask/variablegroups/3?api-version=5.1-preview.1"
-          write-host $value      
-                    $body = '{"id":5,"type":"Vsts","name":"var-group","variables":{"rest-var1":{"isSecret":false,"value":"rest-var-value-1"},"rest-var2":{"isSecret":false,"value":"rest-var-value-2"},"rest-var3":{"isSecret":false,"value":$Env:MY_VARIABLE}}}'
-                    
-          $Result = Invoke-RestMethod -Uri $URL -Headers @{authorization = "Basic $base64AuthInfo"} -Method Put -Body $body -ContentType "application/json"
-          $Variable = $Result.value.variables | ConvertTo-Json -Depth 100
-          Write-Host $Variable
-        
-        shell: powershell
+         curl -L \
+          -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secret.GHToken }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+           https://api.github.com/repos/selvan123/HelloWorld/hooks | jq '.config'
