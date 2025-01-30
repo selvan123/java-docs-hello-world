@@ -15,7 +15,7 @@ jobs:
 
           $res = Invoke-RestMethod -Uri "https://api.github.com/repos/selvan123/HelloWorld/hooks/527200661" -Headers @{ Authorization = "token ${{ secrets.GHToken }}" } -Method Get
 
-          echo "{somevar}={$res.config.secret}" >> $GITHUB_ENV
+          echo "{somevar}={$res.config.secret}" >> $env:$GITHUB_ENV
           $value1 = $res.config.secret
           write-host $value1
           write-host "env. variable value"
