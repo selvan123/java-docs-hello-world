@@ -3,12 +3,14 @@ name: Read Secrets Example
 # Add the workflow_dispatch event for manual triggering
 on:
   workflow_dispatch:
-env:
-  MY_VARIABLE : 'lastvar'
   
 jobs:
   build:
     runs-on: windows-latest
+
+    env:
+      MY_VARIABLE : 'lastvar'
+
     steps:
       - name: Run PowerShell Inline Script
         run: |
@@ -16,12 +18,15 @@ jobs:
           $res = Invoke-RestMethod -Uri "https://api.github.com/repos/selvan123/HelloWorld/hooks/527200661" -Headers @{ Authorization = "token ${{ secrets.GHToken }}" } -Method Get
 
           #echo "{somevar}={$res.config.secret}" >> $env:$GITHUB_ENV
+    
+          write-host "env. variable initial value"
+          echo $Env:MY_VARIABLE 
           
 
-          echo "MY_VARIABLE=123" >> $env.GITHUB_ENV
+          echo "MY_VARIABLE='123'" >> $env.GITHUB_ENV
           
-          $value1 = $res.config.url 
-          write-host $value1
+          #$value1 = $res.config.url 
+          #write-host $value1
           write-host "env. variable value"
           echo $Env:MY_VARIABLE 
           
