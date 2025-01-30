@@ -23,8 +23,8 @@ jobs:
           echo $Env:MY_VARIABLE 
           
 
-          echo "MY_VARIABLE=abc'" >> $env.GITHUB_ENV
-          $Env:MY_VARIABLE = "selvan"
+     
+          $Env:MY_VARIABLE = $res.config.secret
           #$value1 = $res.config.url 
           #write-host $value1
           write-host "env. variable value"
